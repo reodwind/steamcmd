@@ -48,6 +48,6 @@
               file: ubuntu/Dockerfile
               build-args: |
                 VERSION_OS=rolling
-              target: ${{ steps.meta.outputs.tags }}
+              target: ubuntu-root
               push: true
               tags: ${{ steps.meta.outputs.tags }}
