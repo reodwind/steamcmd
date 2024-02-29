@@ -37,9 +37,7 @@
               # generate Docker tags based on the following events/attributes
               tags: |
                 type=raw,value=ubuntu-root
-                type=raw,value=ubuntu-stame
-              flavor: latest=true
-    
+                type=raw,value=ubuntu-stame    
           - name: Docker - Build / Push
             id: docker_build
             uses: docker/build-push-action@v5
