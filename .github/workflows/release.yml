@@ -45,8 +45,9 @@
               platforms: |
                 linux/amd64
               file: ubuntu/Dockerfile
+              labels: ${{ steps.meta.outputs.labels }}
               build-args: |
                 VERSION_OS=rolling
-              target: ubuntu-root
+              target: ${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
               push: true
               tags: ${{ steps.meta.outputs.tags }}
