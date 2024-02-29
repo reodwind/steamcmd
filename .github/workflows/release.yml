@@ -1,0 +1,55 @@
+---
+    name: Docker Images
+    on:  # yamllint disable-line rule:truthy
+      push:
+        branches: [master]
+        paths: ['ubuntu/Dockerfile']
+      schedule:
+        - cron: '30 8 * * 6'
+      workflow_dispatch:
+    
+    jobs:
+      release:
+        name: Release - Docker image
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v4
+    
+          - name: Set up QEMU
+            uses: docker/setup-qemu-action@v3
+    
+          - name: Set up Docker Buildx
+            uses: docker/setup-buildx-action@v3
+    
+          - name: Docker - Login
+            uses: docker/login-action@v3
+            with:
+              username: ${{ secrets.DOCKERHUB_USERNAME }}
+              password: ${{ secrets.DOCKERHUB_TOKEN }}
+    
+          - name: Docker - Metadata
+            id: meta
+            uses: docker/metadata-action@v5
+            with:
+              images: |
+                ${{ github.repository }}
+              # generate Docker tags based on the following events/attributes
+              tags: |
+                type=raw,value=ubuntu-root
+                type=raw,value=ubuntu-stame
+              flavor: latest=true
+    
+          - name: Docker - Build / Push
+            id: docker_build
+            uses: docker/build-push-action@v5
+            with:
+              platforms: |
+                linux/amd64
+                linux/arm64
+              file: ubuntu/Dockerfile
+              build-args: |
+                VERSION_OS=rolling
+              target: ${{ steps.meta.outputs.tags }}
+              push: true
+              tags: ${{ steps.meta.outputs.tags }}
