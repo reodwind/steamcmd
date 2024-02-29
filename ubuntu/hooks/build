@@ -1,0 +1,2 @@
+docker build --target=rolling --build-arg VERSION_OS=rolling  -t steamcmd:steam-rolling .
+docker build --target=rolling-root --build-arg VERSION_OS=rolling -t steamcmd:root-rolling .
