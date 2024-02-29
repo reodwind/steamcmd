@@ -44,7 +44,6 @@
             with:
               platforms: |
                 linux/amd64
-                linux/arm64
               file: ubuntu/Dockerfile
               build-args: |
                 VERSION_OS=rolling
